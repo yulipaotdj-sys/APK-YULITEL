@@ -1,0 +1,4023 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Yulitel</title>
+
+<meta name="theme-color" content="#0F2540">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Yulitel">
+
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgcng9IjQwIiBmaWxsPSIjMEYyNTQwIi8+PHRleHQgeD0iOTYiIHk9IjExMCIgZm9udC1zaXplPSI2MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXdlaWdodD0iYm9sZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiPllUPC90ZXh0Pjwvc3ZnPg==">
+
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnPSIxOTIiIHJ4PSI0MCIgZmlsbD0iIzBGMjU0MCIvPjx0ZXh0IHg9Ijk2IiB5PSIxMTAiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIj5ZVDwvdGV4dD48L3N2Zz4=">
+
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiWXVsaXRlbCIsInNob3J0X25hbWUiOiJZdWxpVGVsIiwic3RhcnRfdXJsIjoiLi8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjRjZGNEVGIiwidGhlbWVfY29sb3IiOiIjMEYyNTQwIiwiaWNvbnMiOltdfQ==">
+
+<!-- LIBRERÍA PARA EXPORTAR A EXCEL -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<style>
+
+:root{
+  --navy:#0F2540;
+  --navy2:#173A63;
+  --amber:#E8823C;
+  --bg:#F6F4EF;
+  --card:#FFFFFF;
+  --ok:#2F855A;
+  --warn:#C08A1E;
+  --bad:#C0392B;
+  --ink:#1B1F24;
+  --line:#E4E0D6;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+button,
+input,
+select,
+textarea{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+#login{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:25px;
+  text-align:center;
+  background:var(--navy);
+  color:white;
+}
+
+#login h2{
+  margin:0 0 8px;
+  font-size:34px;
+}
+
+#login p{
+  margin:0 0 25px;
+  opacity:.9;
+}
+
+#login input{
+  width:100%;
+  max-width:350px;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  margin-bottom:12px;
+  font-size:16px;
+}
+
+#login button{
+  width:100%;
+  max-width:350px;
+  padding:14px;
+  border:0;
+  border-radius:10px;
+  background:var(--amber);
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+}
+
+#app{
+  display:none;
+  min-height:100vh;
+  padding-bottom:75px;
+}
+
+header{
+  background:var(--navy);
+  color:white;
+  padding:18px 16px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+header h1{
+  margin:0;
+  font-size:25px;
+}
+
+header p{
+  margin:4px 0 0;
+  font-size:13px;
+  opacity:.85;
+}
+
+main{
+  max-width:900px;
+  margin:auto;
+  padding:16px;
+}
+
+h2{
+  color:var(--navy);
+}
+
+h3{
+  margin-top:0;
+  color:var(--navy);
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,.04);
+}
+
+.card strong{
+  color:var(--navy);
+}
+
+.addbtn{
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:12px;
+  background:var(--navy2);
+  color:white;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.addbtn:hover{
+  opacity:.92;
+}
+
+.form{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+.form label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin-top:12px;
+  margin-bottom:5px;
+  color:var(--navy);
+}
+
+.form input,
+.form select,
+.form textarea{
+  width:100%;
+  padding:11px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font-size:14px;
+  background:white;
+}
+
+.form textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.save{
+  margin-top:15px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:var(--navy2);
+  color:#fff;
+  font-weight:600;
+}
+
+.delete{
+  border:0;
+  border-radius:8px;
+  padding:8px 12px;
+  background:#FDECEC;
+  color:var(--bad);
+  font-weight:bold;
+}
+
+.pill{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  margin:3px 3px 3px 0;
+}
+
+.pill.ok{
+  background:#E6F4EA;
+  color:var(--ok);
+}
+
+.pill.warn{
+  background:#FFF4D6;
+  color:var(--warn);
+}
+
+.pill.bad{
+  background:#FDECEC;
+  color:var(--bad);
+}
+
+.pill.blue{
+  background:#E7EFF8;
+  color:var(--navy2);
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:68px;
+  background:white;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:20;
+  box-shadow:0 -3px 12px rgba(0,0,0,.05);
+}
+
+.nav button{
+  border:0;
+  background:none;
+  color:#666;
+  font-size:11px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+}
+
+.nav button span{
+  font-size:21px;
+}
+
+.nav button.active{
+  color:var(--navy);
+  font-weight:bold;
+}
+
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.menu-item{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  text-align:left;
+  cursor:pointer;
+}
+
+.menu-item .icon{
+  font-size:25px;
+}
+
+.menu-item strong{
+  display:block;
+  margin-top:7px;
+  color:var(--navy);
+}
+
+.menu-item small{
+  color:#666;
+}
+
+.filter-title{
+  background:var(--navy);
+  color:white;
+  padding:14px;
+  border-radius:12px;
+  margin-bottom:12px;
+}
+
+.filter-actions{
+  display:flex;
+  gap:8px;
+  margin-top:14px;
+}
+
+.filter-actions button{
+  flex:1;
+}
+
+.result-count{
+  margin:12px 0;
+  font-size:14px;
+  color:#555;
+}
+
+.photo-preview{
+  width:100%;
+  max-height:280px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-top:10px;
+}
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:10px;
+}
+
+.photo-grid img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.small{
+  font-size:12px;
+  color:#666;
+}
+
+.back{
+  border:0;
+  background:none;
+  color:var(--navy2);
+  font-weight:bold;
+  padding:0;
+  margin-bottom:12px;
+}
+
+.empty{
+  text-align:center;
+  padding:25px 10px;
+  color:#777;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.stat{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+}
+
+.stat b{
+  display:block;
+  font-size:24px;
+  color:var(--navy);
+}
+
+.stat span{
+  font-size:12px;
+  color:#666;
+}
+
+@media(min-width:700px){
+
+  .menu-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .stat-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+
+  <h2>Yulitel</h2>
+
+  <p>
+    Control de proyectos e informes de campo
+  </p>
+
+  <input
+    id="loginName"
+    placeholder="Nombre del supervisor"
+  >
+
+  <button onclick="doLogin()">
+    Ingresar
+  </button>
+
+</div>
+
+
+<!-- APLICACIÓN -->
+<div id="app">
+
+  <header>
+
+    <h1>Yulitel</h1>
+
+    <p id="who"></p>
+
+  </header>
+
+  <main id="main"></main>
+
+  <nav id="nav"></nav>
+
+</div>
+
+
+<script>
+
+let supervisor = localStorage.getItem('yt_sup') || '';
+
+const STORES = [
+  'proyectos',
+  'actividades',
+  'evidencias',
+  'hallazgos'
+];
+
+let idb = null;
+
+let cache = {
+  proyectos:[],
+  actividades:[],
+  evidencias:[],
+  hallazgos:[]
+};
+
+
+/* =========================
+   BASE DE DATOS
+========================= */
+
+function openIDB(){
+
+  return new Promise((resolve,reject)=>{
+
+    const request =
+      indexedDB.open('YulitelDB',1);
+
+    request.onupgradeneeded = function(e){
+
+      const db = e.target.result;
+
+      STORES.forEach(store=>{
+
+        if(!db.objectStoreNames.contains(store)){
+
+          db.createObjectStore(
+            store,
+            {keyPath:'id'}
+          );
+
+        }
+
+      });
+
+    };
+
+    request.onsuccess = function(e){
+
+      idb = e.target.result;
+
+      resolve(idb);
+
+    };
+
+    request.onerror = function(){
+
+      reject(request.error);
+
+    };
+
+  });
+
+}
+
+
+function idbGetAll(store){
+
+  return new Promise((resolve,reject)=>{
+
+    const tx =
+      idb.transaction(store,'readonly');
+
+    const req =
+      tx.objectStore(store).getAll();
+
+    req.onsuccess =
+      ()=>resolve(req.result || []);
+
+    req.onerror =
+      ()=>reject(req.error);
+
+  });
+
+}
+
+
+function idbPut(store,data){
+
+  return new Promise((resolve,reject)=>{
+
+    const tx =
+      idb.transaction(store,'readwrite');
+
+    tx.objectStore(store).put(data);
+
+    tx.oncomplete =
+      ()=>resolve();
+
+    tx.onerror =
+      ()=>reject(tx.error);
+
+  });
+
+}
+
+
+function idbDel(store,id){
+
+  return new Promise((resolve,reject)=>{
+
+    const tx =
+      idb.transaction(store,'readwrite');
+
+    tx.objectStore(store).delete(id);
+
+    tx.oncomplete =
+      ()=>resolve();
+
+    tx.onerror =
+      ()=>reject(tx.error);
+
+  });
+
+}
+
+
+async function refreshAll(){
+
+  for(const store of STORES){
+
+    cache[store] =
+      await idbGetAll(store);
+
+  }
+
+}
+
+
+/* =========================
+   NAVEGACIÓN
+========================= */
+
+const tabs = [
+
+  {
+    id:'home',
+    label:'Inicio',
+    icon:'🏠'
+  },
+
+  {
+    id:'proyectos',
+    label:'Proyectos',
+    icon:'📁'
+  },
+
+  {
+    id:'actividades',
+    label:'Actividades',
+    icon:'🗓️'
+  },
+
+  {
+    id:'evidencias',
+    label:'Evidencias',
+    icon:'📷'
+  },
+
+  {
+    id:'hallazgos',
+    label:'Hallazgos',
+    icon:'⚠️'
+  }
+
+];
+
+
+let tab = 'home';
+
+
+function goTab(t,render=true){
+
+  tab = t;
+
+  if(render){
+
+    render();
+
+  }
+
+}
+
+
+function cerrarSesion(){
+
+  localStorage.removeItem('yt_sup');
+
+  location.reload();
+
+}
+
+
+function doLogin(){
+
+  const name =
+    document.getElementById('loginName')
+      .value.trim();
+
+  if(!name){
+
+    alert('Escribe el nombre del supervisor.');
+
+    return;
+
+  }
+
+  supervisor = name;
+
+  localStorage.setItem(
+    'yt_sup',
+    supervisor
+  );
+
+  startApp();
+
+}
+
+
+async function startApp(){
+
+  document.getElementById('login')
+    .style.display='none';
+
+  document.getElementById('app')
+    .style.display='block';
+
+  document.getElementById('who')
+    .textContent =
+      'Supervisor: ' + supervisor;
+
+  await openIDB();
+
+  await refreshAll();
+
+  render();
+
+}
+
+
+function renderNav(){
+
+  const nav =
+    document.getElementById('nav');
+
+  nav.innerHTML =
+    tabs.map(t=>`
+
+      <button
+        class="${tab===t.id?'active':''}"
+        onclick="goTab('${t.id}')"
+      >
+
+        <span>${t.icon}</span>
+
+        ${t.label}
+
+      </button>
+
+    `).join('');
+
+}
+
+
+function switchTab(){
+
+  renderNav();
+
+}
+
+
+function fmtDate(date){
+
+  if(!date) return '';
+
+  return new Date(date)
+    .toLocaleDateString('es-CO');
+
+}
+
+
+function semColor(value){
+
+  if(value==='Verde')
+    return 'ok';
+
+  if(value==='Amarillo')
+    return 'warn';
+
+  if(value==='Rojo')
+    return 'bad';
+
+  return 'blue';
+
+}
+
+
+function newId(){
+
+  return Date.now().toString()
+    + Math.random()
+      .toString(36)
+      .slice(2,8);
+
+}
+
+
+/* =========================
+   RENDER GENERAL
+========================= */
+
+function render(){
+
+  const main =
+    document.getElementById('main');
+
+  if(tab==='home')
+    main.innerHTML=viewHome();
+
+  else if(tab==='proyectos')
+    main.innerHTML=viewProyectos();
+
+  else if(tab==='actividades')
+    main.innerHTML=viewActividades();
+
+  else if(tab==='evidencias')
+    main.innerHTML=viewEvidencias();
+
+  else if(tab==='hallazgos')
+    main.innerHTML=viewHallazgos();
+
+  else if(tab==='filtro')
+    main.innerHTML=viewFiltro();
+
+  renderNav();
+
+}
+
+
+/* =========================
+   INICIO
+========================= */
+
+function viewHome(){
+
+  return `
+
+    <h2>Inicio</h2>
+
+    <p>
+      Bienvenido, ${supervisor}.
+    </p>
+
+    <div class="stat-grid">
+
+      <div class="stat">
+        <b>${cache.proyectos.length}</b>
+        <span>Proyectos</span>
+      </div>
+
+      <div class="stat">
+        <b>${cache.actividades.length}</b>
+        <span>Actividades</span>
+      </div>
+
+      <div class="stat">
+        <b>${cache.evidencias.length}</b>
+        <span>Evidencias</span>
+      </div>
+
+      <div class="stat">
+        <b>${cache.hallazgos.length}</b>
+        <span>Hallazgos</span>
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>📁 Proyectos</h3>
+
+      <div class="menu-grid">
+
+        <div class="menu-item"
+             onclick="goTab('proyectos')">
+
+          <div class="icon">➕</div>
+
+          <strong>Registrar proyecto</strong>
+
+          <small>
+            Crear un nuevo proyecto
+          </small>
+
+        </div>
+
+        <div class="menu-item"
+             onclick="goTab('proyectos')">
+
+          <div class="icon">🔎</div>
+
+          <strong>Consultar proyectos</strong>
+
+          <small>
+            Ver proyectos registrados
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>🗓️ Actividades</h3>
+
+      <div class="menu-grid">
+
+        <div class="menu-item"
+             onclick="goTab('actividades')">
+
+          <div class="icon">➕</div>
+
+          <strong>Registrar actividad</strong>
+
+          <small>
+            Registrar trabajo realizado
+          </small>
+
+        </div>
+
+        <div class="menu-item"
+             onclick="goTab('actividades')">
+
+          <div class="icon">🔎</div>
+
+          <strong>Consultar actividades</strong>
+
+          <small>
+            Consultar actividades
+          </small>
+
+        </div>
+
+        <div class="menu-item"
+             onclick="goTab('actividades')">
+
+          <div class="icon">📋</div>
+
+          <strong>Revisar información</strong>
+
+          <small>
+            Revisar evidencias y hallazgos
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>📷 Evidencias</h3>
+
+      <div class="menu-grid">
+
+        <div class="menu-item"
+             onclick="goTab('evidencias')">
+
+          <div class="icon">📷</div>
+
+          <strong>Cargar evidencia</strong>
+
+          <small>
+            Registrar fotografías
+          </small>
+
+        </div>
+
+        <div class="menu-item"
+             onclick="goTab('evidencias')">
+
+          <div class="icon">📝</div>
+
+          <strong>Registrar datos</strong>
+
+          <small>
+            Agregar descripción
+          </small>
+
+        </div>
+
+        <div class="menu-item"
+             onclick="goTab('evidencias')">
+
+          <div class="icon">🔎</div>
+
+          <strong>Consultar evidencias</strong>
+
+          <small>
+            Ver registros
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>⚠️ Hallazgos</h3>
+
+      <div class="menu-grid">
+
+        <div class="menu-item"
+             onclick="goTab('hallazgos')">
+
+          <div class="icon">➕</div>
+
+          <strong>Registrar hallazgo</strong>
+
+          <small>
+            Registrar novedad
+          </small>
+
+        </div>
+
+        <div class="menu-item"
+             onclick="goTab('hallazgos')">
+
+          <div class="icon">🔎</div>
+
+          <strong>Consultar hallazgos</strong>
+
+          <small>
+            Ver hallazgos
+          </small>
+
+        </div>
+
+        <div class="menu-item"
+             onclick="openCampoForm()">
+
+          <div class="icon">📷</div>
+
+          <strong>Hallazgo + evidencia</strong>
+
+          <small>
+            Registrar en campo
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>🔎 Filtrar información</h3>
+
+      <p class="small">
+        Busca proyectos, actividades,
+        evidencias o hallazgos.
+      </p>
+
+      <button
+        class="addbtn"
+        onclick="goTab('filtro')"
+      >
+        🔎 Abrir filtros
+      </button>
+
+    </div>
+
+
+    <button
+      class="addbtn"
+      style="background:#C0392B"
+      onclick="cerrarSesion()"
+    >
+      Cerrar sesión
+    </button>
+
+  `;
+
+}
+
+
+/* =========================
+   PROYECTOS
+========================= */
+
+function viewProyectos(){
+
+  return `
+
+    <button
+      class="back"
+      onclick="goTab('home')"
+    >
+      ← Volver al inicio
+    </button>
+
+    <h2>📁 Proyectos</h2>
+
+
+    <div class="form">
+
+      <h3>Registrar proyecto</h3>
+
+      <label>Código del proyecto</label>
+
+      <input id="p-codigo"
+             placeholder="Ej. PRJ-001">
+
+
+      <label>Nombre del proyecto</label>
+
+      <input id="p-nombre"
+             placeholder="Nombre del proyecto">
+
+
+      <label>UIP</label>
+
+      <input id="p-uip"
+             placeholder="Unidad de Infraestructura de Proyecto">
+
+
+      <label>Municipio</label>
+
+      <input id="p-mun"
+             placeholder="Municipio">
+
+
+      <label>Fecha de inicio</label>
+
+      <input id="p-fi"
+             type="date">
+
+
+      <label>Fecha final</label>
+
+      <input id="p-ff"
+             type="date">
+
+
+      <label>Días de atraso</label>
+
+      <input id="p-atraso"
+             type="number"
+             min="0"
+             value="0">
+
+
+      <button
+        class="save"
+        onclick="saveProyecto()"
+      >
+        Guardar proyecto
+      </button>
+
+    </div>
+
+
+    <h3>Proyectos registrados</h3>
+
+    ${
+      cache.proyectos.length
+      ?
+      cache.proyectos.map(p=>`
+
+        <div class="card">
+
+          <strong>
+            ${p.codigo || 'Sin código'}
+          </strong>
+
+          <p>
+            ${p.nombre || ''}
+          </p>
+
+          <span class="pill blue">
+            UIP: ${p.uip || 'N/D'}
+          </span>
+
+          <span class="pill blue">
+            ${p.municipio || 'N/D'}
+          </span>
+
+          <p class="small">
+            Inicio: ${p.fi || 'N/D'}<br>
+            Fin: ${p.ff || 'N/D'}<br>
+            Atraso: ${p.atraso || 0} días
+          </p>
+
+          <button
+            class="delete"
+            onclick="delDoc('proyectos','${p.id}')"
+          >
+            Eliminar
+          </button>
+
+        </div>
+
+      `).join('')
+
+      :
+
+      `<div class="empty">
+        No hay proyectos registrados.
+      </div>`
+
+    }
+
+  `;
+
+}
+
+
+async function saveProyecto(){
+
+  const data={
+
+    id:newId(),
+
+    codigo:v('p-codigo'),
+
+    nombre:v('p-nombre'),
+
+    uip:v('p-uip'),
+
+    municipio:v('p-mun'),
+
+    fi:v('p-fi'),
+
+    ff:v('p-ff'),
+
+    atraso:Number(
+      v('p-atraso') || 0
+    ),
+
+    creado:Date.now()
+
+  };
+
+
+  if(!data.codigo ||
+     !data.nombre){
+
+    alert(
+      'Completa el código y el nombre del proyecto.'
+    );
+
+    return;
+
+  }
+
+
+  await idbPut(
+    'proyectos',
+    data
+  );
+
+  await refreshAll();
+
+  alert('Proyecto guardado correctamente.');
+
+  render();
+
+}
+
+
+/* =========================
+   ACTIVIDADES
+========================= */
+
+function viewActividades(){
+
+  return `
+
+    <button
+      class="back"
+      onclick="goTab('home')"
+    >
+      ← Volver al inicio
+    </button>
+
+    <h2>🗓️ Actividades</h2>
+
+
+    <div class="form">
+
+      <h3>Registrar actividad</h3>
+
+      <label>Proyecto</label>
+
+      <select id="a-proyecto">
+
+        <option value="">
+          Seleccionar proyecto
+        </option>
+
+        ${
+          cache.proyectos.map(p=>`
+
+            <option value="${p.id}">
+              ${p.codigo} - ${p.nombre}
+            </option>
+
+          `).join('')
+        }
+
+      </select>
+
+
+      <label>Actividad</label>
+
+      <input
+        id="a-nombre"
+        placeholder="Descripción de la actividad"
+      >
+
+
+      <label>Fecha</label>
+
+      <input
+        id="a-fecha"
+        type="date"
+      >
+
+
+      <label>Estado</label>
+
+      <select id="a-estado">
+
+        <option value="Por hacer">
+          Por hacer
+        </option>
+
+        <option value="En desarrollo">
+          En desarrollo
+        </option>
+
+        <option value="En revisión">
+          En revisión
+        </option>
+
+        <option value="Completado">
+          Completado
+        </option>
+
+      </select>
+
+
+      <button
+        class="save"
+        onclick="saveActividad()"
+      >
+        Guardar actividad
+      </button>
+
+    </div>
+
+
+    <div class="form">
+
+      <h3>Filtrar por proyecto</h3>
+
+      <select
+        id="filt-act-proy"
+        onchange="renderActividadesLista()"
+      >
+
+        <option value="">
+          Todos los proyectos
+        </option>
+
+        ${
+          cache.proyectos.map(p=>`
+
+            <option value="${p.id}">
+              ${p.codigo} - ${p.nombre}
+            </option>
+
+          `).join('')
+        }
+
+      </select>
+
+    </div>
+
+
+    <div id="lista-actividades">
+
+      ${actividadesHTML()}
+
+    </div>
+
+  `;
+
+}
+
+
+function actividadesHTML(){
+
+  let lista =
+    cache.actividades;
+
+  const filtro =
+    document.getElementById('filt-act-proy')
+      ?.value || '';
+
+  if(filtro){
+
+    lista =
+      lista.filter(
+        a=>a.proyecto===filtro
+      );
+
+  }
+
+
+  if(!lista.length){
+
+    return `
+      <div class="empty">
+        No hay actividades registradas.
+      </div>
+    `;
+
+  }
+
+
+  return lista.map(a=>`
+
+    <div class="card">
+
+      <strong>
+        ${a.nombre || 'Actividad'}
+      </strong>
+
+      <p class="small">
+        Fecha: ${a.fecha || 'N/D'}
+      </p>
+
+      <span class="pill blue">
+        ${a.estado || 'N/D'}
+      </span>
+
+      <br><br>
+
+      <button
+        class="addbtn"
+        onclick="revisarActividad('${a.id}')"
+      >
+        📋 Revisar información
+      </button>
+
+      <button
+        class="delete"
+        onclick="delDoc('actividades','${a.id}')"
+      >
+        Eliminar
+      </button>
+
+    </div>
+
+  `).join('');
+
+}
+
+
+function renderActividadesLista(){
+
+  const el =
+    document.getElementById(
+      'lista-actividades'
+    );
+
+  if(el){
+
+    el.innerHTML =
+      actividadesHTML();
+
+  }
+
+}
+
+
+async function saveActividad(){
+
+  const data={
+
+    id:newId(),
+
+    proyecto:v('a-proyecto'),
+
+    nombre:v('a-nombre'),
+
+    fecha:v('a-fecha'),
+
+    estado:v('a-estado'),
+
+    creado:Date.now()
+
+  };
+
+
+  if(!data.proyecto ||
+     !data.nombre){
+
+    alert(
+      'Selecciona un proyecto y escribe la actividad.'
+    );
+
+    return;
+
+  }
+
+
+  await idbPut(
+    'actividades',
+    data
+  );
+
+  await refreshAll();
+
+  alert('Actividad guardada correctamente.');
+
+  render();
+
+}
+
+
+function revisarActividad(id){
+
+  const a =
+    cache.actividades.find(
+      x=>x.id===id
+    );
+
+  if(!a) return;
+
+  const evidencias =
+    cache.evidencias.filter(
+      e=>e.actividad===id
+    );
+
+  const proyecto =
+    cache.proyectos.find(
+      p=>p.id===a.proyecto
+    );
+
+
+  document.getElementById('main')
+    .innerHTML=`
+
+      <button
+        class="back"
+        onclick="goTab('actividades')"
+      >
+        ← Volver
+      </button>
+
+      <h2>📋 Revisar actividad</h2>
+
+      <div class="card">
+
+        <h3>
+          ${a.nombre}
+        </h3>
+
+        <p>
+          <strong>Proyecto:</strong>
+          ${proyecto?.nombre || 'N/D'}
+        </p>
+
+        <p>
+          <strong>Fecha:</strong>
+          ${a.fecha || 'N/D'}
+        </p>
+
+        <p>
+          <strong>Estado:</strong>
+          ${a.estado || 'N/D'}
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>📷 Evidencias</h3>
+
+        ${
+          evidencias.length
+          ?
+          evidencias.map(e=>`
+
+            <div class="card">
+
+              <p>
+                ${e.desc || 'Sin descripción'}
+              </p>
+
+              <p class="small">
+                Registrado por:
+                ${e.registradoPor || 'N/D'}
+              </p>
+
+              ${
+                e.fotos?.length
+                ?
+                `<div class="photo-grid">
+                  ${e.fotos.map(f=>`
+                    <img src="${f.data}">
+                  `).join('')}
+                </div>`
+                :
+                ''
+              }
+
+            </div>
+
+          `).join('')
+
+          :
+
+          `<div class="empty">
+            No hay evidencias.
+          </div>`
+
+        }
+
+      </div>
+
+    `;
+
+}
+
+
+/* =========================
+   EVIDENCIAS
+========================= */
+
+let evState={
+  open:false,
+  step:1,
+  actividad:'',
+  fotos:[],
+  desc:''
+};
+
+let pendingGeo=null;
+
+
+function viewEvidencias(){
+
+  return `
+
+    <button
+      class="back"
+      onclick="goTab('home')"
+    >
+      ← Volver al inicio
+    </button>
+
+    <h2>📷 Evidencias</h2>
+
+
+    <button
+      class="addbtn"
+      onclick="openEvForm()"
+    >
+      📷 Cargar evidencia
+    </button>
+
+
+    ${
+      cache.evidencias.length
+      ?
+      cache.evidencias.map(e=>`
+
+        <div class="card">
+
+          <strong>
+            Evidencia
+          </strong>
+
+          <p>
+            ${e.desc || 'Sin descripción'}
+          </p>
+
+          <p class="small">
+
+            Fecha:
+            ${e.creado
+              ?new Date(e.creado)
+                .toLocaleString('es-CO')
+              :'N/D'
+            }
+
+            <br>
+
+            Registrado por:
+            ${e.registradoPor || 'N/D'}
+
+          </p>
+
+
+          ${
+            e.latitude!==undefined
+            ?
+            `<span class="pill blue">
+              📍 ${e.latitude},
+              ${e.longitude}
+            </span>`
+            :
+            ''
+          }
+
+
+          ${
+            e.fotos?.length
+            ?
+            `<div class="photo-grid">
+              ${e.fotos.map(f=>`
+                <img src="${f.data}">
+              `).join('')}
+            </div>`
+            :
+            ''
+          }
+
+
+          <br>
+
+          <button
+            class="delete"
+            onclick="delDoc('evidencias','${e.id}')"
+          >
+            Eliminar
+          </button>
+
+        </div>
+
+      `).join('')
+
+      :
+
+      `<div class="empty">
+        No hay evidencias registradas.
+      </div>`
+
+    }
+
+  `;
+
+}
+
+
+function openEvForm(){
+
+  document.getElementById('main')
+    .innerHTML=`
+
+      <button
+        class="back"
+        onclick="goTab('evidencias')"
+      >
+        ← Volver
+      </button>
+
+      <h2>📷 Cargar evidencia</h2>
+
+
+      <div class="form">
+
+        <label>Actividad</label>
+
+        <select id="ev-act">
+
+          <option value="">
+            Seleccionar actividad
+          </option>
+
+          ${
+            cache.actividades.map(a=>`
+
+              <option value="${a.id}">
+                ${a.nombre}
+              </option>
+
+            `).join('')
+          }
+
+        </select>
+
+
+        <label>Descripción</label>
+
+        <textarea
+          id="ev-desc"
+          placeholder="Descripción de la evidencia"
+        ></textarea>
+
+
+        <label>
+          Fotografía
+        </label>
+
+        <input
+          id="ev-photo"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          multiple
+          onchange="addEvPhoto(this.files)"
+        >
+
+
+        <div id="ev-preview"></div>
+
+
+        <button
+          class="save"
+          onclick="saveEvidencia()"
+        >
+          Guardar evidencia
+        </button>
+
+      </div>
+
+    `;
+
+  evState={
+    open:true,
+    step:1,
+    actividad:'',
+    fotos:[],
+    desc:''
+  };
+
+}
+
+
+function evGoStep(n){
+
+  evState.step=n;
+
+}
+
+
+async function addEvPhoto(files){
+
+  if(!files || !files.length)
+    return;
+
+  for(const file of files){
+
+    await overlayAndPush(file);
+
+  }
+
+  const preview =
+    document.getElementById('ev-preview');
+
+  if(preview){
+
+    preview.innerHTML =
+      evState.fotos.map(f=>`
+
+        <img
+          src="${f.data}"
+          class="photo-preview"
+        >
+
+      `).join('');
+
+  }
+
+}
+
+
+function overlayAndPush(file){
+
+  return new Promise(resolve=>{
+
+    const reader =
+      new FileReader();
+
+    reader.onload=function(){
+
+      const img =
+        new Image();
+
+      img.onload=function(){
+
+        const canvas =
+          document.createElement('canvas');
+
+        const max=1200;
+
+        let w=img.width;
+        let h=img.height;
+
+        if(w>max){
+
+          h=h*max/w;
+          w=max;
+
+        }
+
+        canvas.width=w;
+        canvas.height=h;
+
+        const ctx =
+          canvas.getContext('2d');
+
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          w,
+          h
+        );
+
+
+        ctx.fillStyle=
+          'rgba(15,37,64,.82)';
+
+        ctx.fillRect(
+          0,
+          h-95,
+          w,
+          95
+        );
+
+
+        ctx.fillStyle='white';
+
+        ctx.font='18px Arial';
+
+
+        const fecha =
+          new Date()
+            .toLocaleString('es-CO');
+
+
+        ctx.fillText(
+          'Yulitel',
+          20,
+          h-65
+        );
+
+        ctx.fillText(
+          fecha,
+          20,
+          h-40
+        );
+
+        ctx.fillText(
+          supervisor,
+          20,
+          h-15
+        );
+
+
+        const data =
+          canvas.toDataURL(
+            'image/jpeg',
+            .82
+          );
+
+
+        evState.fotos.push({
+
+          data:data,
+
+          nombre:file.name,
+
+          fecha:Date.now()
+
+        });
+
+
+        resolve();
+
+      };
+
+      img.src=reader.result;
+
+    };
+
+    reader.readAsDataURL(file);
+
+  });
+
+}
+
+
+async function saveEvidencia(){
+
+  const actividad =
+    v('ev-act');
+
+  const desc =
+    v('ev-desc');
+
+
+  if(!actividad){
+
+    alert(
+      'Selecciona una actividad.'
+    );
+
+    return;
+
+  }
+
+
+  if(!evState.fotos.length){
+
+    alert(
+      'Agrega al menos una fotografía.'
+    );
+
+    return;
+
+  }
+
+
+  const data={
+
+    id:newId(),
+
+    actividad:actividad,
+
+    desc:desc,
+
+    fotos:evState.fotos,
+
+    creado:Date.now(),
+
+    registradoPor:supervisor,
+
+    latitude:
+      pendingGeo?.latitude ?? null,
+
+    longitude:
+      pendingGeo?.longitude ?? null
+
+  };
+
+
+  await idbPut(
+    'evidencias',
+    data
+  );
+
+  await refreshAll();
+
+  evState.fotos=[];
+
+  alert(
+    'Evidencia guardada correctamente.'
+  );
+
+  render();
+
+}
+
+
+/* =========================
+   HALLAZGOS
+========================= */
+
+function viewHallazgos(){
+
+  return `
+
+    <button
+      class="back"
+      onclick="goTab('home')"
+    >
+      ← Volver al inicio
+    </button>
+
+    <h2>⚠️ Hallazgos</h2>
+
+
+    <div class="form">
+
+      <h3>Registrar hallazgo</h3>
+
+      <label>Proyecto</label>
+
+      <select id="f-hal-proy">
+
+        <option value="">
+          Seleccionar proyecto
+        </option>
+
+        ${
+          cache.proyectos.map(p=>`
+
+            <option value="${p.id}">
+              ${p.codigo} - ${p.nombre}
+            </option>
+
+          `).join('')
+        }
+
+      </select>
+
+
+      <label>Severidad</label>
+
+      <select id="f-hal-sev">
+
+        <option value="Baja">
+          Baja
+        </option>
+
+        <option value="Media">
+          Media
+        </option>
+
+        <option value="Alta">
+          Alta
+        </option>
+
+        <option value="Crítica">
+          Crítica
+        </option>
+
+      </select>
+
+
+      <label>Estado / Semáforo</label>
+
+      <select id="f-hal-sem">
+
+        <option value="Verde">
+          Verde
+        </option>
+
+        <option value="Amarillo">
+          Amarillo
+        </option>
+
+        <option value="Rojo">
+          Rojo
+        </option>
+
+      </select>
+
+
+      <label>Tipificación</label>
+
+      <input
+        id="f-hal-tipo"
+        placeholder="Tipo de hallazgo"
+      >
+
+
+      <label>Sub-estado</label>
+
+      <input
+        id="f-hal-sub"
+        placeholder="Sub-estado"
+      >
+
+
+      <label>Descripción</label>
+
+      <textarea
+        id="f-hal-desc"
+        placeholder="Detalle del hallazgo"
+      ></textarea>
+
+
+      <label>Fotografía opcional</label>
+
+      <input
+        id="f-hal-photo"
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onchange="prepPhotoH(this.files)"
+      >
+
+      <div id="f-hal-preview"></div>
+
+
+      <button
+        class="save"
+        onclick="saveHallazgo()"
+      >
+        Guardar hallazgo
+      </button>
+
+    </div>
+
+
+    <div class="form">
+
+      <h3>Filtros</h3>
+
+      <select
+        id="filt-hal-proy"
+        onchange="renderHallazgosLista()"
+      >
+
+        <option value="">
+          Todos los proyectos
+        </option>
+
+        ${
+          cache.proyectos.map(p=>`
+
+            <option value="${p.id}">
+              ${p.codigo} - ${p.nombre}
+            </option>
+
+          `).join('')
+        }
+
+      </select>
+
+
+      <select
+        id="filt-hal-sem"
+        onchange="renderHallazgosLista()"
+      >
+
+        <option value="">
+          Todos los estados
+        </option>
+
+        <option value="Verde">
+          Verde
+        </option>
+
+        <option value="Amarillo">
+          Amarillo
+        </option>
+
+        <option value="Rojo">
+          Rojo
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div id="lista-hallazgos">
+
+      ${hallazgosHTML()}
+
+    </div>
+
+
+    <button
+      class="addbtn"
+      onclick="openCampoForm()"
+    >
+      📷 Registrar hallazgo + evidencia en campo
+    </button>
+
+  `;
+
+}
+
+
+function hallazgosHTML(){
+
+  let lista =
+    cache.hallazgos;
+
+
+  const proy =
+    document.getElementById(
+      'filt-hal-proy'
+    )?.value || '';
+
+
+  const sem =
+    document.getElementById(
+      'filt-hal-sem'
+    )?.value || '';
+
+
+  if(proy){
+
+    lista =
+      lista.filter(
+        h=>h.proyecto===proy
+      );
+
+  }
+
+
+  if(sem){
+
+    lista =
+      lista.filter(
+        h=>h.semaforo===sem
+      );
+
+  }
+
+
+  if(!lista.length){
+
+    return `
+      <div class="empty">
+        No hay hallazgos registrados.
+      </div>
+    `;
+
+  }
+
+
+  return lista.map(h=>`
+
+    <div class="card">
+
+      <span class="pill ${semColor(h.semaforo)}">
+        ${h.semaforo || 'N/D'}
+      </span>
+
+      <span class="pill blue">
+        ${h.sev || 'N/D'}
+      </span>
+
+      <h3>
+        ${h.tipo || 'Hallazgo'}
+      </h3>
+
+      <p>
+        ${h.desc || 'Sin descripción'}
+      </p>
+
+      <p class="small">
+
+        Sub-estado:
+        ${h.sub || 'N/D'}
+
+        <br>
+
+        Registrado por:
+        ${h.registradoPor || 'N/D'}
+
+      </p>
+
+
+      ${
+        h.foto
+        ?
+        `<img
+          src="${h.foto}"
+          class="photo-preview"
+        >`
+        :
+        ''
+      }
+
+
+      <br>
+
+      <button
+        class="delete"
+        onclick="delDoc('hallazgos','${h.id}')"
+      >
+        Eliminar
+      </button>
+
+    </div>
+
+  `).join('');
+
+}
+
+
+function renderHallazgosLista(){
+
+  const el =
+    document.getElementById(
+      'lista-hallazgos'
+    );
+
+  if(el){
+
+    el.innerHTML =
+      hallazgosHTML();
+
+  }
+
+}
+
+
+let hallazgoPhoto=null;
+
+
+function prepPhotoH(files){
+
+  if(!files || !files.length)
+    return;
+
+  const reader =
+    new FileReader();
+
+  reader.onload=function(){
+
+    hallazgoPhoto =
+      reader.result;
+
+    const el =
+      document.getElementById(
+        'f-hal-preview'
+      );
+
+    if(el){
+
+      el.innerHTML=`
+
+        <img
+          src="${hallazgoPhoto}"
+          class="photo-preview"
+        >
+
+      `;
+
+    }
+
+  };
+
+  reader.readAsDataURL(files[0]);
+
+}
+
+
+async function saveHallazgo(){
+
+  const data={
+
+    id:newId(),
+
+    proyecto:v('f-hal-proy'),
+
+    sev:v('f-hal-sev'),
+
+    semaforo:v('f-hal-sem'),
+
+    tipo:v('f-hal-tipo'),
+
+    sub:v('f-hal-sub'),
+
+    desc:v('f-hal-desc'),
+
+    foto:hallazgoPhoto,
+
+    creado:Date.now(),
+
+    registradoPor:supervisor,
+
+    origen:'Registro general'
+
+  };
+
+
+  if(!data.proyecto ||
+     !data.desc){
+
+    alert(
+      'Selecciona el proyecto y escribe la descripción.'
+    );
+
+    return;
+
+  }
+
+
+  await idbPut(
+    'hallazgos',
+    data
+  );
+
+  await refreshAll();
+
+  hallazgoPhoto=null;
+
+  alert(
+    'Hallazgo guardado correctamente.'
+  );
+
+  render();
+
+}
+
+
+/* =========================
+   HALLAZGO EN CAMPO
+========================= */
+
+let campoGeo=null;
+
+let campoPhoto=null;
+
+
+function openCampoForm(){
+
+  document.getElementById('main')
+    .innerHTML=`
+
+      <button
+        class="back"
+        onclick="goTab('hallazgos')"
+      >
+        ← Volver
+      </button>
+
+      <h2>
+        📷 Hallazgo + evidencia
+      </h2>
+
+
+      <div class="form">
+
+        <label>Proyecto</label>
+
+        <select id="f-campo-proy">
+
+          <option value="">
+            Seleccionar proyecto
+          </option>
+
+          ${
+            cache.proyectos.map(p=>`
+
+              <option value="${p.id}">
+                ${p.codigo} - ${p.nombre}
+              </option>
+
+            `).join('')
+          }
+
+        </select>
+
+
+        <label>Actividad opcional</label>
+
+        <select id="f-campo-act">
+
+          <option value="">
+            Sin actividad
+          </option>
+
+          ${
+            cache.actividades.map(a=>`
+
+              <option value="${a.id}">
+                ${a.nombre}
+              </option>
+
+            `).join('')
+          }
+
+        </select>
+
+
+        <label>Severidad</label>
+
+        <select id="f-campo-sev">
+
+          <option value="Baja">
+            Baja
+          </option>
+
+          <option value="Media">
+            Media
+          </option>
+
+          <option value="Alta">
+            Alta
+          </option>
+
+          <option value="Crítica">
+            Crítica
+          </option>
+
+        </select>
+
+
+        <label>Estado</label>
+
+        <select id="f-campo-sem">
+
+          <option value="Verde">
+            Verde
+          </option>
+
+          <option value="Amarillo">
+            Amarillo
+          </option>
+
+          <option value="Rojo">
+            Rojo
+          </option>
+
+        </select>
+
+
+        <label>Tipificación</label>
+
+        <input
+          id="f-campo-tipo"
+          placeholder="Tipo de hallazgo"
+        >
+
+
+        <label>Descripción</label>
+
+        <textarea
+          id="f-campo-desc"
+          placeholder="Detalle del hallazgo"
+        ></textarea>
+
+
+        <label>
+          Evidencia fotográfica
+        </label>
+
+        <input
+          id="f-campo-photo"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onchange="prepPhotoCampo(this.files)"
+        >
+
+
+        <div id="f-campo-preview"></div>
+
+
+        <button
+          class="save"
+          onclick="saveCampo()"
+        >
+          Guardar hallazgo
+        </button>
+
+      </div>
+
+    `;
+
+}
+
+
+function prepPhotoCampo(files){
+
+  if(!files || !files.length)
+    return;
+
+  const reader =
+    new FileReader();
+
+  reader.onload=function(){
+
+    campoPhoto =
+      reader.result;
+
+    const el =
+      document.getElementById(
+        'f-campo-preview'
+      );
+
+    if(el){
+
+      el.innerHTML=`
+
+        <img
+          src="${campoPhoto}"
+          class="photo-preview"
+        >
+
+      `;
+
+    }
+
+  };
+
+  reader.readAsDataURL(files[0]);
+
+}
+
+
+async function saveCampo(){
+
+  const data={
+
+    id:newId(),
+
+    proyecto:v('f-campo-proy'),
+
+    actividad:v('f-campo-act'),
+
+    sev:v('f-campo-sev'),
+
+    semaforo:v('f-campo-sem'),
+
+    tipo:v('f-campo-tipo'),
+
+    sub:'En campo',
+
+    desc:v('f-campo-desc'),
+
+    foto:campoPhoto,
+
+    creado:Date.now(),
+
+    registradoPor:supervisor,
+
+    origen:'Registro en campo'
+
+  };
+
+
+  if(!data.proyecto ||
+     !data.desc){
+
+    alert(
+      'Selecciona el proyecto y escribe la descripción.'
+    );
+
+    return;
+
+  }
+
+
+  await idbPut(
+    'hallazgos',
+    data
+  );
+
+
+  if(data.actividad && data.foto){
+
+    await idbPut(
+      'evidencias',
+      {
+
+        id:newId(),
+
+        actividad:data.actividad,
+
+        desc:
+          'Evidencia asociada al hallazgo: ' +
+          data.desc,
+
+        fotos:[
+          {
+            data:data.foto,
+            nombre:'evidencia-hallazgo.jpg',
+            fecha:Date.now()
+          }
+        ],
+
+        creado:Date.now(),
+
+        registradoPor:supervisor,
+
+        latitude:
+          campoGeo?.latitude ?? null,
+
+        longitude:
+          campoGeo?.longitude ?? null
+
+      }
+
+    );
+
+  }
+
+
+  await refreshAll();
+
+  campoPhoto=null;
+
+  alert(
+    'Hallazgo registrado correctamente.'
+  );
+
+  render();
+
+}
+
+
+/* =========================
+   HU-12 FILTRAR
+========================= */
+
+let filtroState={
+  texto:'',
+  tipo:'',
+  proyecto:'',
+  fecha:''
+};
+
+
+function viewFiltro(){
+
+  const resultados =
+    filtrarInformacion();
+
+
+  return `
+
+    <button
+      class="back"
+      onclick="goTab('home')"
+    >
+      ← Volver al inicio
+    </button>
+
+
+    <div class="filter-title">
+
+      <h2 style="color:white;margin:0">
+        🔎 Filtrar información
+      </h2>
+
+      <p style="margin:6px 0 0">
+        Busca información registrada
+        en Yulitel.
+      </p>
+
+    </div>
+
+
+    <div class="form">
+
+      <label>
+        Buscar texto
+      </label>
+
+      <input
+        id="filtro-texto"
+        placeholder="Código, proyecto, actividad, hallazgo..."
+        value="${filtroState.texto}"
+      >
+
+
+      <label>
+        Tipo de información
+      </label>
+
+      <select id="filtro-tipo">
+
+        <option value="">
+          Todos
+        </option>
+
+        <option
+          value="proyecto"
+          ${filtroState.tipo==='proyecto'?'selected':''}
+        >
+          Proyectos
+        </option>
+
+        <option
+          value="actividad"
+          ${filtroState.tipo==='actividad'?'selected':''}
+        >
+          Actividades
+        </option>
+
+        <option
+          value="evidencia"
+          ${filtroState.tipo==='evidencia'?'selected':''}
+        >
+          Evidencias
+        </option>
+
+        <option
+          value="hallazgo"
+          ${filtroState.tipo==='hallazgo'?'selected':''}
+        >
+          Hallazgos
+        </option>
+
+      </select>
+
+
+      <label>
+        Proyecto
+      </label>
+
+      <select id="filtro-proyecto">
+
+        <option value="">
+          Todos los proyectos
+        </option>
+
+        ${
+          cache.proyectos.map(p=>`
+
+            <option
+              value="${p.id}"
+              ${filtroState.proyecto===p.id?'selected':''}
+            >
+              ${p.codigo} - ${p.nombre}
+            </option>
+
+          `).join('')
+        }
+
+      </select>
+
+
+      <label>
+        Fecha
+      </label>
+
+      <input
+        id="filtro-fecha"
+        type="date"
+        value="${filtroState.fecha}"
+      >
+
+
+      <div class="filter-actions">
+
+        <button
+          class="save"
+          onclick="ejecutarFiltro()"
+        >
+          🔎 Buscar
+        </button>
+
+        <button
+          class="save"
+          style="background:#777"
+          onclick="limpiarFiltro()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+
+      <!-- BOTÓN EXPORTAR EXCEL -->
+
+      <button
+        class="addbtn"
+        style="background:#2F855A;margin-top:10px"
+        onclick="exportarExcel()"
+      >
+        📊 Exportar a Excel
+      </button>
+
+    </div>
+
+
+    <div class="result-count">
+
+      ${resultados.length}
+      resultado(s) encontrado(s).
+
+    </div>
+
+
+    <div id="resultados-filtro">
+
+      ${renderResultadoFiltro(resultados)}
+
+    </div>
+
+  `;
+
+}
+
+
+function ejecutarFiltro(){
+
+  filtroState={
+
+    texto:
+      document.getElementById(
+        'filtro-texto'
+      )?.value.trim() || '',
+
+    tipo:
+      document.getElementById(
+        'filtro-tipo'
+      )?.value || '',
+
+    proyecto:
+      document.getElementById(
+        'filtro-proyecto'
+      )?.value || '',
+
+    fecha:
+      document.getElementById(
+        'filtro-fecha'
+      )?.value || ''
+
+  };
+
+
+  render();
+
+}
+
+
+function limpiarFiltro(){
+
+  filtroState={
+    texto:'',
+    tipo:'',
+    proyecto:'',
+    fecha:''
+  };
+
+  render();
+
+}
+
+
+function textoIncluye(obj,texto){
+
+  if(!texto)
+    return true;
+
+  return JSON.stringify(obj)
+    .toLowerCase()
+    .includes(
+      texto.toLowerCase()
+    );
+
+}
+
+
+function fechaRegistro(obj){
+
+  if(!obj)
+    return '';
+
+  if(obj.fecha)
+    return obj.fecha;
+
+  if(obj.creado){
+
+    return new Date(obj.creado)
+      .toISOString()
+      .slice(0,10);
+
+  }
+
+  return '';
+
+}
+
+
+function proyectoDeEvidencia(e){
+
+  const act =
+    cache.actividades.find(
+      a=>a.id===e.actividad
+    );
+
+  return act?.proyecto || '';
+
+}
+
+
+function filtrarInformacion(){
+
+  const resultado=[];
+
+
+  if(
+    !filtroState.tipo ||
+    filtroState.tipo==='proyecto'
+  ){
+
+    cache.proyectos.forEach(p=>{
+
+      if(
+        textoIncluye(p,filtroState.texto) &&
+        (!filtroState.proyecto ||
+         p.id===filtroState.proyecto) &&
+        (!filtroState.fecha ||
+         fechaRegistro(p)===filtroState.fecha)
+      ){
+
+        resultado.push({
+
+          tipo:'proyecto',
+
+          data:p,
+
+          proyecto:p.id
+
+        });
+
+      }
+
+    });
+
+  }
+
+
+  if(
+    !filtroState.tipo ||
+    filtroState.tipo==='actividad'
+  ){
+
+    cache.actividades.forEach(a=>{
+
+      if(
+        textoIncluye(a,filtroState.texto) &&
+        (!filtroState.proyecto ||
+         a.proyecto===filtroState.proyecto) &&
+        (!filtroState.fecha ||
+         fechaRegistro(a)===filtroState.fecha)
+      ){
+
+        resultado.push({
+
+          tipo:'actividad',
+
+          data:a,
+
+          proyecto:a.proyecto
+
+        });
+
+      }
+
+    });
+
+  }
+
+
+  if(
+    !filtroState.tipo ||
+    filtroState.tipo==='evidencia'
+  ){
+
+    cache.evidencias.forEach(e=>{
+
+      const proyecto =
+        proyectoDeEvidencia(e);
+
+
+      if(
+        textoIncluye(e,filtroState.texto) &&
+        (!filtroState.proyecto ||
+         proyecto===filtroState.proyecto) &&
+        (!filtroState.fecha ||
+         fechaRegistro(e)===filtroState.fecha)
+      ){
+
+        resultado.push({
+
+          tipo:'evidencia',
+
+          data:e,
+
+          proyecto:proyecto
+
+        });
+
+      }
+
+    });
+
+  }
+
+
+  if(
+    !filtroState.tipo ||
+    filtroState.tipo==='hallazgo'
+  ){
+
+    cache.hallazgos.forEach(h=>{
+
+      if(
+        textoIncluye(h,filtroState.texto) &&
+        (!filtroState.proyecto ||
+         h.proyecto===filtroState.proyecto) &&
+        (!filtroState.fecha ||
+         fechaRegistro(h)===filtroState.fecha)
+      ){
+
+        resultado.push({
+
+          tipo:'hallazgo',
+
+          data:h,
+
+          proyecto:h.proyecto
+
+        });
+
+      }
+
+    });
+
+  }
+
+
+  return resultado;
+
+}
+
+
+function renderResultadoFiltro(resultados){
+
+  if(!resultados.length){
+
+    return `
+
+      <div class="empty">
+
+        No se encontraron resultados.
+
+      </div>
+
+    `;
+
+  }
+
+
+  return resultados.map(r=>{
+
+    const d=r.data;
+
+
+    if(r.tipo==='proyecto'){
+
+      return `
+
+        <div class="card">
+
+          <span class="pill blue">
+            📁 Proyecto
+          </span>
+
+          <h3>
+            ${d.codigo || ''}
+          </h3>
+
+          <p>
+            ${d.nombre || ''}
+          </p>
+
+          <p class="small">
+            Municipio:
+            ${d.municipio || 'N/D'}
+            <br>
+            UIP:
+            ${d.uip || 'N/D'}
+            <br>
+            Inicio:
+            ${d.fi || 'N/D'}
+            <br>
+            Fin:
+            ${d.ff || 'N/D'}
+          </p>
+
+        </div>
+
+      `;
+
+    }
+
+
+    if(r.tipo==='actividad'){
+
+      const p =
+        cache.proyectos.find(
+          x=>x.id===d.proyecto
+        );
+
+
+      return `
+
+        <div class="card">
+
+          <span class="pill blue">
+            🗓️ Actividad
+          </span>
+
+          <h3>
+            ${d.nombre || ''}
+          </h3>
+
+          <p>
+            Proyecto:
+            ${p?.nombre || 'N/D'}
+          </p>
+
+          <p class="small">
+            Fecha:
+            ${d.fecha || 'N/D'}
+            <br>
+            Estado:
+            ${d.estado || 'N/D'}
+          </p>
+
+        </div>
+
+      `;
+
+    }
+
+
+    if(r.tipo==='evidencia'){
+
+      const a =
+        cache.actividades.find(
+          x=>x.id===d.actividad
+        );
+
+
+      return `
+
+        <div class="card">
+
+          <span class="pill blue">
+            📷 Evidencia
+          </span>
+
+          <h3>
+            ${a?.nombre || 'Evidencia'}
+          </h3>
+
+          <p>
+            ${d.desc || 'Sin descripción'}
+          </p>
+
+          <p class="small">
+            Registrado por:
+            ${d.registradoPor || 'N/D'}
+            <br>
+            Fotos:
+            ${d.fotos?.length || 0}
+          </p>
+
+        </div>
+
+      `;
+
+    }
+
+
+    if(r.tipo==='hallazgo'){
+
+      return `
+
+        <div class="card">
+
+          <span class="pill ${semColor(d.semaforo)}">
+            ⚠️ ${d.semaforo || 'Hallazgo'}
+          </span>
+
+          <h3>
+            ${d.tipo || 'Hallazgo'}
+          </h3>
+
+          <p>
+            ${d.desc || ''}
+          </p>
+
+          <p class="small">
+            Severidad:
+            ${d.sev || 'N/D'}
+            <br>
+            Registrado por:
+            ${d.registradoPor || 'N/D'}
+          </p>
+
+        </div>
+
+      `;
+
+    }
+
+
+    return '';
+
+  }).join('');
+
+}
+
+
+/* ==================================================
+   EXPORTAR A EXCEL
+================================================== */
+
+function exportarExcel(){
+
+  /*
+    Tomamos los filtros que estén actualmente
+    escritos en pantalla.
+  */
+
+  filtroState={
+
+    texto:
+      document.getElementById(
+        'filtro-texto'
+      )?.value.trim() || '',
+
+    tipo:
+      document.getElementById(
+        'filtro-tipo'
+      )?.value || '',
+
+    proyecto:
+      document.getElementById(
+        'filtro-proyecto'
+      )?.value || '',
+
+    fecha:
+      document.getElementById(
+        'filtro-fecha'
+      )?.value || ''
+
+  };
+
+
+  /*
+    Aplicamos los mismos filtros
+    que utiliza HU-12.
+  */
+
+  const resultados =
+    filtrarInformacion();
+
+
+  /*
+    Verificamos si existe información.
+  */
+
+  if(!resultados.length){
+
+    alert(
+      'No hay información para exportar con los filtros seleccionados.'
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Verificamos que Excel esté disponible.
+  */
+
+  if(typeof XLSX==='undefined'){
+
+    alert(
+      'No se pudo cargar la herramienta de Excel. Verifica tu conexión a Internet e inténtalo nuevamente.'
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Creamos el libro de Excel.
+  */
+
+  const wb =
+    XLSX.utils.book_new();
+
+
+  /* =========================
+     HOJA PROYECTOS
+  ========================= */
+
+  const proyectos=[];
+
+
+  resultados
+    .filter(
+      r=>r.tipo==='proyecto'
+    )
+    .forEach(r=>{
+
+      const p=r.data;
+
+
+      proyectos.push({
+
+        'Código':
+          p.codigo || '',
+
+        'Nombre':
+          p.nombre || '',
+
+        'UIP':
+          p.uip || '',
+
+        'Municipio':
+          p.municipio || '',
+
+        'Fecha inicio':
+          p.fi || '',
+
+        'Fecha fin':
+          p.ff || '',
+
+        'Días de atraso':
+          p.atraso || 0,
+
+        'Estado':
+          p.atraso>0
+            ?'Con atraso'
+            :'A tiempo'
+
+      });
+
+    });
+
+
+  if(proyectos.length){
+
+    const ws =
+      XLSX.utils.json_to_sheet(
+        proyectos
+      );
+
+    XLSX.utils.book_append_sheet(
+      wb,
+      ws,
+      'Proyectos'
+    );
+
+  }
+
+
+  /* =========================
+     HOJA ACTIVIDADES
+  ========================= */
+
+  const actividades=[];
+
+
+  resultados
+    .filter(
+      r=>r.tipo==='actividad'
+    )
+    .forEach(r=>{
+
+      const a=r.data;
+
+
+      const proyecto =
+        cache.proyectos.find(
+          p=>p.id===a.proyecto
+        );
+
+
+      actividades.push({
+
+        'Código proyecto':
+          proyecto?.codigo || '',
+
+        'Proyecto':
+          proyecto?.nombre || '',
+
+        'Actividad':
+          a.nombre || '',
+
+        'Fecha':
+          a.fecha || '',
+
+        'Estado':
+          a.estado || '',
+
+        'Supervisor':
+          supervisor || ''
+
+      });
+
+    });
+
+
+  if(actividades.length){
+
+    const ws =
+      XLSX.utils.json_to_sheet(
+        actividades
+      );
+
+    XLSX.utils.book_append_sheet(
+      wb,
+      ws,
+      'Actividades'
+    );
+
+  }
+
+
+  /* =========================
+     HOJA EVIDENCIAS
+  ========================= */
+
+  const evidencias=[];
+
+
+  resultados
+    .filter(
+      r=>r.tipo==='evidencia'
+    )
+    .forEach(r=>{
+
+      const e=r.data;
+
+
+      const act =
+        cache.actividades.find(
+          a=>a.id===e.actividad
+        );
+
+
+      const proyecto =
+        cache.proyectos.find(
+          p=>p.id===act?.proyecto
+        );
+
+
+      evidencias.push({
+
+        'Código proyecto':
+          proyecto?.codigo || '',
+
+        'Proyecto':
+          proyecto?.nombre || '',
+
+        'Actividad':
+          act?.nombre || '',
+
+        'Fecha y hora':
+          e.creado
+            ?new Date(e.creado)
+              .toLocaleString('es-CO')
+            :'',
+
+        'Registrado por':
+          e.registradoPor || '',
+
+        'Latitud':
+          e.latitude ?? '',
+
+        'Longitud':
+          e.longitude ?? '',
+
+        'Comentarios':
+          e.desc || '',
+
+        'Cantidad de fotos':
+          e.fotos?.length || 0
+
+      });
+
+    });
+
+
+  if(evidencias.length){
+
+    const ws =
+      XLSX.utils.json_to_sheet(
+        evidencias
+      );
+
+    XLSX.utils.book_append_sheet(
+      wb,
+      ws,
+      'Evidencias'
+    );
+
+  }
+
+
+  /* =========================
+     HOJA HALLAZGOS
+  ========================= */
+
+  const hallazgos=[];
+
+
+  resultados
+    .filter(
+      r=>r.tipo==='hallazgo'
+    )
+    .forEach(r=>{
+
+      const h=r.data;
+
+
+      const proyecto =
+        cache.proyectos.find(
+          p=>p.id===h.proyecto
+        );
+
+
+      hallazgos.push({
+
+        'Código proyecto':
+          proyecto?.codigo || '',
+
+        'Proyecto':
+          proyecto?.nombre || '',
+
+        'Tipificación':
+          h.tipo || '',
+
+        'Sub-estado':
+          h.sub || '',
+
+        'Severidad':
+          h.sev || '',
+
+        'Estado':
+          h.semaforo || '',
+
+        'Descripción':
+          h.desc || '',
+
+        'Registrado por':
+          h.registradoPor || '',
+
+        'Fecha y hora':
+          h.creado
+            ?new Date(h.creado)
+              .toLocaleString('es-CO')
+            :'',
+
+        'Latitud':
+          h.latitude ?? '',
+
+        'Longitud':
+          h.longitude ?? '',
+
+        'Origen':
+          h.origen || '',
+
+        'Tiene fotografía':
+          h.foto
+            ?'Sí'
+            :'No'
+
+      });
+
+    });
+
+
+  if(hallazgos.length){
+
+    const ws =
+      XLSX.utils.json_to_sheet(
+        hallazgos
+      );
+
+    XLSX.utils.book_append_sheet(
+      wb,
+      ws,
+      'Hallazgos'
+    );
+
+  }
+
+
+  /* =========================
+     HOJA RESUMEN
+  ========================= */
+
+  const resumen=[
+
+    {
+      'Tipo':'Proyectos',
+      'Cantidad':
+        resultados.filter(
+          r=>r.tipo==='proyecto'
+        ).length
+    },
+
+    {
+      'Tipo':'Actividades',
+      'Cantidad':
+        resultados.filter(
+          r=>r.tipo==='actividad'
+        ).length
+    },
+
+    {
+      'Tipo':'Evidencias',
+      'Cantidad':
+        resultados.filter(
+          r=>r.tipo==='evidencia'
+        ).length
+    },
+
+    {
+      'Tipo':'Hallazgos',
+      'Cantidad':
+        resultados.filter(
+          r=>r.tipo==='hallazgo'
+        ).length
+    },
+
+    {
+      'Tipo':'Total de registros',
+      'Cantidad':
+        resultados.length
+    }
+
+  ];
+
+
+  const wsResumen =
+    XLSX.utils.json_to_sheet(
+      resumen
+    );
+
+
+  XLSX.utils.book_append_sheet(
+    wb,
+    wsResumen,
+    'Resumen'
+  );
+
+
+  /* =========================
+     AJUSTAR COLUMNAS
+  ========================= */
+
+  wb.SheetNames.forEach(nombre=>{
+
+    const ws =
+      wb.Sheets[nombre];
+
+
+    if(!ws['!ref'])
+      return;
+
+
+    const rango =
+      XLSX.utils.decode_range(
+        ws['!ref']
+      );
+
+
+    const anchos=[];
+
+
+    for(
+      let c=rango.s.c;
+      c<=rango.e.c;
+      c++
+    ){
+
+      let max=10;
+
+
+      for(
+        let f=rango.s.r;
+        f<=rango.e.r;
+        f++
+      ){
+
+        const celda =
+          ws[
+            XLSX.utils.encode_cell({
+              r:f,
+              c:c
+            })
+          ];
+
+
+        if(celda){
+
+          max=Math.max(
+            max,
+            String(
+              celda.v ?? ''
+            ).length
+          );
+
+        }
+
+      }
+
+
+      anchos.push({
+
+        wch:
+          Math.min(
+            max+2,
+            35
+          )
+
+      });
+
+    }
+
+
+    ws['!cols']=anchos;
+
+  });
+
+
+  /* =========================
+     DESCARGAR ARCHIVO
+  ========================= */
+
+  const fecha =
+    new Date()
+      .toISOString()
+      .slice(0,10);
+
+
+  const nombreArchivo =
+    `Yulitel_Reporte_${fecha}.xlsx`;
+
+
+  XLSX.writeFile(
+    wb,
+    nombreArchivo
+  );
+
+
+  alert(
+    'El reporte de Yulitel se exportó correctamente a Excel.'
+  );
+
+}
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function v(id){
+
+  return document
+    .getElementById(id)
+    ?.value
+    ?.trim() || '';
+
+}
+
+
+function toggle(id){
+
+  const el =
+    document.getElementById(id);
+
+  if(el){
+
+    el.style.display =
+      el.style.display==='none'
+      ?'block'
+      :'none';
+
+  }
+
+}
+
+
+function clearForm(){
+
+  document
+    .querySelectorAll(
+      '.form input, .form textarea'
+    )
+    .forEach(el=>{
+
+      if(el.type!=='file')
+        el.value='';
+
+    });
+
+}
+
+
+async function delDoc(store,id){
+
+  if(
+    !confirm(
+      '¿Deseas eliminar este registro?'
+    )
+  ){
+
+    return;
+
+  }
+
+
+  await idbDel(
+    store,
+    id
+  );
+
+
+  await refreshAll();
+
+
+  render();
+
+}
+
+
+/* =========================
+   INICIAR APP
+========================= */
+
+if(supervisor){
+
+  startApp();
+
+}
+
+</script>
+
+</body>
+</html>
